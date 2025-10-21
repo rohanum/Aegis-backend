@@ -1,14 +1,27 @@
 Flask==2.3.3
-langchain>=0.1.0
-langchain-pinecone>=0.1.0
 requests==2.31.0
 python-dotenv==1.0.0
+
+# LangChain ecosystem (latest stable split versions)
+langchain==0.3.27
+langchain-core==0.3.79
+langchain-community==0.3.14
+langchain-openai==0.3.35
+langchain-pinecone==0.2.12
+langchain-text-splitters==0.3.11
+
+# Embeddings & NLP
 sentence-transformers==2.2.2
+transformers==4.35.2
+tokenizers==0.15.2
+tiktoken==0.12.0
+
+# Torch stack
 torch==2.9.0
 torchvision==0.24.0
-transformers==4.35.2
-tiktoken==0.12.0
-tokenizers==0.15.2
+triton==3.5.0
+
+# Utilities
 tqdm==4.67.1
 typing-inspect==0.9.0
 typing-inspection==0.4.2
@@ -20,6 +33,14 @@ yarl==1.22.0
 zstandard==0.25.0
 threadpoolctl==3.6.0
 tenacity==8.5.0
+numpy==2.3.4
+scipy==1.16.2
+scikit-learn==1.7.2
+safetensors==0.6.2
+sentencepiece==0.2.1
+sympy==1.14.0
+nltk==3.9.2
+
 
 
 
