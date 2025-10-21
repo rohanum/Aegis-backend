@@ -2,13 +2,13 @@ Flask==3.1.2
 requests==2.32.3
 python-dotenv==1.0.0
 
-# Langchain and Extensions - FIXED to last known compatible 0.2.x versions
+# Langchain and Extensions
 langchain==0.2.14
-langchain-core==0.2.19 # FIXED: Was 0.2.22 (unavailable)
-langchain-community==0.2.19 # FIXED: Was 0.2.22 (unavailable)
+langchain-core==0.2.19
+langchain-community==0.2.19
 langchain-text-splitters==0.2.2
 langchain-huggingface==0.1.2
-langchain-pinecone==0.2.12
+langchain-pinecone==0.2.12 # **FIXED: Was 0.2.2 (unavailable)**
 
 # Vector DB
 pinecone-client==5.0.1
