@@ -2,10 +2,10 @@ Flask==3.1.2
 requests==2.32.3
 python-dotenv==1.0.0
 
-# Langchain and Extensions 
+# Langchain and Extensions - FIXED to align with internal dependencies
 langchain==0.2.17
-langchain-core==0.2.17
-langchain-community==0.2.19
+langchain-core==0.2.43 # **FIXED: Now satisfies langchain's internal requirement (>=0.2.43)**
+langchain-community==0.2.43 # Aligned to core to maintain compatibility
 langchain-text-splitters==0.2.2
 langchain-huggingface==0.1.2
 langchain-pinecone==0.2.12
@@ -21,8 +21,8 @@ tqdm==4.66.4
 httpx==0.27.0
 PyYAML==6.0.1
 
-# Flask dependencies (FIXED: Werkzeug updated to meet Flask's dependency)
-Werkzeug==3.1.0 # FIXED: Now satisfies Flask's requirement (>=3.1.0)
+# Flask dependencies
+Werkzeug==3.1.0
 Jinja2==3.1.4
 itsdangerous==2.2.0
 click==8.1.7
