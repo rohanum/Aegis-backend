@@ -2,15 +2,15 @@ Flask==3.1.2
 requests==2.32.3
 python-dotenv==1.0.0
 
-# LangChain - Updated to a stable, compatible set in the 0.3.x series
-langchain==0.2.22
-langchain-core==0.2.22
-langchain-community==0.2.22
+# Langchain and Extensions - Final attempt using known existing 0.2.x stable versions
+langchain==0.2.17 # FIXED: Was 0.2.22 (unavailable)
+langchain-core==0.2.17 # Aligned with langchain
+langchain-community==0.2.19 # Last existing 0.2.x community version
 langchain-text-splitters==0.2.2
-langchain-huggingface==0.3.1 # Updated to a newer, compatible version
-langchain-pinecone==0.3.0 # Updated to 0.3.0
+langchain-huggingface==0.1.2
+langchain-pinecone==0.2.12
 
-# Pinecone client
+# Vector DB
 pinecone-client==5.0.1
 
 # Database
@@ -21,15 +21,15 @@ tqdm==4.66.4
 httpx==0.27.0
 PyYAML==6.0.1
 
-# Flask dependencies (NOTE: Werkzeug 3.1.3 is not yet available, using 3.0.3)
+# Flask dependencies (NOTE: Using stable versions that exist)
 Werkzeug==3.0.3
 Jinja2==3.1.4
 itsdangerous==2.2.0
 click==8.1.7
-blinker==1.7.0 # NOTE: 1.9.0 is unavailable for Python 3.12, using 1.7.0
+blinker==1.7.0 
 markupsafe>=2.1.1
 
-# LangChain dependencies (These should be handled by the packages above, but good to keep as a fallback)
+# LangChain dependencies (Keep these here for explicit resolution)
 aiohttp>=3.8.3,<4.0.0
 langsmith>=0.1.17,<0.2.0
 numpy>=1.26.0,<2.0.0
