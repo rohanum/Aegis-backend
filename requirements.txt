@@ -2,10 +2,10 @@ Flask==3.1.2
 requests==2.32.3
 python-dotenv==1.0.0
 
-# Langchain and Extensions - FIXED to align with internal dependencies
-langchain==0.2.17
-langchain-core==0.2.43 # **FIXED: Now satisfies langchain's internal requirement (>=0.2.43)**
-langchain-community==0.2.43 # Aligned to core to maintain compatibility
+# Langchain and Extensions - Final FINAL attempt using a confirmed existing, aligned set
+langchain==0.3.27 # Last available 0.3.x version
+langchain-core==0.2.44 # Aligning core to the last available in the 0.2.x family
+langchain-community==0.3.31 # Last available 0.3.x community version before the major jump
 langchain-text-splitters==0.2.2
 langchain-huggingface==0.1.2
 langchain-pinecone==0.2.12
@@ -29,7 +29,7 @@ click==8.1.7
 blinker==1.9.0
 markupsafe>=2.1.1
 
-# LangChain dependencies
+# LangChain dependencies (Keeping the explicit external dependencies)
 aiohttp>=3.8.3,<4.0.0
 langsmith>=0.1.17,<0.2.0
 numpy>=1.26.0,<2.0.0
