@@ -7,8 +7,8 @@ langchain==0.2.14
 langchain-core==0.2.19
 langchain-community==0.2.19
 langchain-text-splitters==0.2.2
-langchain-huggingface==0.1.2 # **FIXED: Was 0.1.3 (unavailable)**
-langchain-pinecone==0.2.2
+langchain-huggingface==0.1.2
+langchain-pinecone==0.2.12 # **FIXED: Was 0.2.2 (unavailable)**
 
 # Vector DB
 pinecone-client==5.0.1
