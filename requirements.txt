@@ -8,12 +8,12 @@ langchain-core==0.2.19
 langchain-community==0.2.19
 langchain-text-splitters==0.2.2
 langchain-huggingface==0.1.2
-langchain-pinecone==0.2.12 # **FIXED: Was 0.2.2 (unavailable)**
+langchain-pinecone==0.2.12
 
 # Vector DB
 pinecone-client==5.0.1
 
-# Core Utilities - Keeping up-to-date
+# Core Utilities
 pydantic==2.8.2
 SQLAlchemy==2.0.44
 tqdm==4.66.4
@@ -25,4 +25,4 @@ Werkzeug==3.0.3
 Jinja2==3.1.4
 itsdangerous==2.2.0
 click==8.1.7
-blinker==1.7.0
+blinker==1.9.0  # **Fixed**
