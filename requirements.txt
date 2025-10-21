@@ -1,17 +1,14 @@
-# Core Frameworks
 Flask==2.3.3
 requests==2.32.3
 python-dotenv==1.0.0
 
-# Langchain and Extensions (Python 3.13 compatible)
+# Langchain and Extensions
 langchain==0.3.25
 langchain-core==0.3.79
 langchain-community==0.3.2
 langchain-text-splitters==0.3.8
 langchain-huggingface==0.3.1
-# Use a compatible pinecone wrapper for Python 3.13
 langchain-pinecone==0.2.12
-langsmith==0.3.7
 
 # Vector DB
 pinecone-client==5.0.1
