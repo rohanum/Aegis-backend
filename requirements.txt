@@ -1,28 +1,31 @@
-Flask==2.3.3
+Flask==3.1.3
 requests==2.32.3
 python-dotenv==1.0.0
 
-# Langchain and Extensions
-langchain==0.3.25
-langchain-core==0.3.79
-langchain-community==0.3.2
-langchain-text-splitters==0.3.8
-langchain-huggingface==0.3.1
-langchain-pinecone==0.2.12
+# Langchain and Extensions - Updated for compatibility
+# Using the latest stable versions to fix the langsmith conflict
+langchain==0.2.14
+langchain-core==0.2.20
+langchain-community==0.2.20
+langchain-text-splitters==0.2.2
+langchain-huggingface==0.1.3
+langchain-pinecone==0.2.2
 
 # Vector DB
-pinecone-client==5.0.1
+# Keeping pinecone-client as specified, but usually the latest is safer
+pinecone-client==5.0.1 
 
-# Core Utilities
-pydantic==2.12.3
+# Core Utilities - Updated/Kept compatible versions
+pydantic==2.8.2
 SQLAlchemy==2.0.44
-tqdm==4.66.1
-httpx==0.28.1
-PyYAML>=6.0.0
+tqdm==4.66.4
+httpx==0.27.0
+PyYAML==6.0.1
+annotated-types==0.7.0 # Explicitly include a necessary sub-dependency
 
-# Flask dependencies
-Werkzeug>=3.1.3
-Jinja2>=3.1.6
-itsdangerous>=2.2.0
-click>=8.3.0
-blinker>=1.9.0
+# Flask dependencies (kept close to originals but slightly updated)
+Werkzeug==3.0.3
+Jinja2==3.1.4
+itsdangerous==2.2.0
+click==8.1.7
+blinker==1.7.0
