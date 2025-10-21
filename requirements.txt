@@ -2,13 +2,13 @@ Flask==3.1.2
 requests==2.32.3
 python-dotenv==1.0.0
 
-# Langchain and Extensions - FINAL, Unified 0.3.x Block
-langchain==0.3.27 # Keep this version
-langchain-core==0.3.79 # **FIXED: Now satisfies langchain's internal requirement (>=0.3.72)**
-langchain-community==0.3.31 # Keep this version for now, it's the newest 0.3.x available
-langchain-text-splitters==0.2.2
-langchain-huggingface==0.1.2
-langchain-pinecone==0.2.12
+# Langchain and Extensions - FIXED to align with 0.3.x requirement
+langchain==0.3.27 
+langchain-core==0.3.79 
+langchain-community==0.3.31 
+langchain-text-splitters==0.3.9 # **FIXED: Now satisfies langchain's requirement (>=0.3.9)**
+langchain-huggingface==0.3.1 # Updated to a higher 0.3.x version for better alignment
+langchain-pinecone==0.3.0 # Updated to a higher 0.3.x version for better alignment
 
 # Vector DB
 pinecone-client==5.0.1
@@ -29,7 +29,7 @@ click==8.1.7
 blinker==1.9.0
 markupsafe>=2.1.1
 
-# LangChain dependencies (Keeping the explicit external dependencies)
+# LangChain dependencies (These should be handled by the packages above, but good to keep as a fallback)
 aiohttp>=3.8.3,<4.0.0
 langsmith>=0.1.17,<0.2.0
 numpy>=1.26.0,<2.0.0
