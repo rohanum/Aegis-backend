@@ -2,10 +2,10 @@ Flask==3.1.2
 requests==2.32.3
 python-dotenv==1.0.0
 
-# Langchain and Extensions - FINAL FINAL FINAL attempt using confirmed existing, aligned versions
-langchain==0.3.27 
-langchain-core==0.2.43 # **FIXED: Was 0.2.44 (unavailable). Now uses the last 0.2.x version.**
-langchain-community==0.3.31 # Confirmed to exist in previous logs
+# Langchain and Extensions - FINAL, Unified 0.3.x Block
+langchain==0.3.27 # Keep this version
+langchain-core==0.3.79 # **FIXED: Now satisfies langchain's internal requirement (>=0.3.72)**
+langchain-community==0.3.31 # Keep this version for now, it's the newest 0.3.x available
 langchain-text-splitters==0.2.2
 langchain-huggingface==0.1.2
 langchain-pinecone==0.2.12
