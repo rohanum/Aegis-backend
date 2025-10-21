@@ -1,14 +1,15 @@
+# Core Libraries
 Flask==3.1.2
 requests==2.32.3
 python-dotenv==1.0.0
 
-# Langchain and Extensions
+# LangChain & Extensions
 langchain==0.2.14
 langchain-core==0.2.19
 langchain-community==0.2.19
 langchain-text-splitters==0.2.2
 langchain-huggingface==0.1.2
-langchain-pinecone==0.2.12
+langchain-pinecone==0.2.12  # fixed unavailable version
 
 # Vector DB
 pinecone-client==5.0.1
@@ -20,9 +21,9 @@ tqdm==4.66.4
 httpx==0.27.0
 PyYAML==6.0.1
 
-# Flask dependencies
-Werkzeug==3.0.3
+# Flask Dependencies (compatible versions)
+Werkzeug==3.1.3
 Jinja2==3.1.4
 itsdangerous==2.2.0
 click==8.1.7
-blinker==1.9.0  # **Fixed**
+blinker==1.9.0
