@@ -1,20 +1,19 @@
-# Core Packages
 Flask==3.1.2
 requests==2.32.3
 python-dotenv==1.0.0
 
-# LangChain & Extensions
-langchain==0.2.19
+# LangChain & dependencies (use latest available 0.2.x compatible versions)
+langchain==0.2.17
 langchain-core==0.2.32
 langchain-community==0.2.19
 langchain-text-splitters==0.2.2
 langchain-huggingface==0.1.2
 langchain-pinecone==0.2.12
 
-# Pinecone
+# Pinecone client
 pinecone-client==5.0.1
 
-# Database & ORM
+# Database
 SQLAlchemy==2.0.44
 
 # Utilities
@@ -22,7 +21,7 @@ tqdm==4.66.4
 httpx==0.27.0
 PyYAML==6.0.1
 
-# Flask Dependencies
+# Flask dependencies
 Werkzeug==3.1.3
 Jinja2==3.1.4
 itsdangerous==2.2.0
@@ -30,7 +29,7 @@ click==8.1.7
 blinker==1.9.0
 markupsafe>=2.1.1
 
-# LangChain Dependencies
+# LangChain dependencies
 aiohttp>=3.8.3,<4.0.0
 langsmith>=0.1.17,<0.2.0
 numpy>=1.26.0,<2.0.0
@@ -40,7 +39,7 @@ packaging>=23.2,<25
 typing-extensions>=4.7
 dataclasses-json>=0.5.7,<0.7
 
-# Requests Dependencies
+# Requests dependencies
 charset-normalizer>=2,<4
 idna>=2.5,<4
 urllib3>=1.21.1,<3
