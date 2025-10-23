@@ -5,7 +5,6 @@ from flask import Flask, request, jsonify
 
 # --- LangChain imports ---
 from langchain_pinecone import PineconeVectorStore
-from pinecone import Pinecone, ServerlessSpec
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain.schema.runnable import RunnableLambda
@@ -20,17 +19,23 @@ app = Flask(__name__)
 # =====================
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
 PINECONE_INDEX_NAME = "medicalbot"
+PINECONE_ENVIRONMENT = "us-east1-gcp"  # Replace with your Pinecone environment
 
-# Initialize Pinecone client
+# Set API key for Pinecone
+os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
+
 try:
-    pc = Pinecone(api_key=PINECONE_API_KEY)
-    index = pc.Index(PINECONE_INDEX_NAME)
-
     # Initialize embeddings
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-    # Create retriever from the Pinecone index
-    vectorstore = PineconeVectorStore(index=index, embedding=embeddings)
+    # Initialize PineconeVectorStore directly
+    vectorstore = PineconeVectorStore(
+        index_name=PINECONE_INDEX_NAME,
+        embedding=embeddings,
+        environment=PINECONE_ENVIRONMENT
+    )
+
+    # Create retriever
     retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 3})
     print("✅ Pinecone index connected successfully.")
 except Exception as e:
