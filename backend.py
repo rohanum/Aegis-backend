@@ -3,39 +3,41 @@ import os
 import requests
 from dotenv import load_dotenv
 
-# LangChain 1.0+ imports
-from langchain.chains import RetrievalQA
-from langchain.prompts.chat import ChatPromptTemplate
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Pinecone
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.schema.runnable import RunnableLambda
+from langchain.prompts.chat import ChatPromptTemplate
 
-# ✅ New Pinecone client
-import pinecone
+# Pinecone v2 client
+from pinecone import Pinecone, ServerlessSpec
 
 load_dotenv()
 app = Flask(__name__)
 
 # --- Pinecone Setup ---
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
-PINECONE_ENV = os.environ.get("PINECONE_ENV", "us-east1-gcp")  # adjust if needed
+pc = Pinecone(api_key=PINECONE_API_KEY)
+
 index_name = "medicalbot"
 
-pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_ENV)
+# ✅ Ensure the index exists
+if index_name not in [i.name for i in pc.list_indexes()]:
+    pc.create_index(
+        name=index_name,
+        dimension=384,  # match your embeddings dimension
+        metric="cosine",
+        spec=ServerlessSpec(cloud="aws", region="us-west-2")
+    )
 
-# --- Load embeddings ---
+# Now get the index object
+index = pc.Index(index_name)
+
+# --- Embeddings ---
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-# --- Load existing Pinecone index ---
-try:
-    # Using the correct Pinecone v2 API
-    index = pinecone.Index(index_name)
-    docsearch = Pinecone(index=index, embedding=embeddings)
-    retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k": 3})
-    print("Pinecone index loaded successfully.")
-except Exception as e:
-    print(f"Error loading Pinecone index: {e}")
-    retriever = None
+# --- Retriever ---
+from langchain.vectorstores import Pinecone as LC_Pinecone
+docsearch = LC_Pinecone(index=index, embedding=embeddings)
+retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 
 # --- Gemini API Setup ---
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
@@ -46,25 +48,18 @@ def gemini_generate(prompt_text: str, max_tokens: int = 1024) -> str:
     if not GEMINI_API_KEY:
         return "Error: GEMINI_API_KEY is not set."
     headers = {"Content-Type": "application/json"}
-    data = {
-        "contents": [{"parts": [{"text": prompt_text}]}],
-        "generationConfig": {"maxOutputTokens": max_tokens}
-    }
+    data = {"contents":[{"parts":[{"text":prompt_text}]}],"generationConfig":{"maxOutputTokens":max_tokens}}
     try:
-        response = requests.post(GEMINI_URL, headers=headers, json=data)
-        response.raise_for_status()
-        response_json = response.json()
-        if response_json.get("candidates"):
-            candidate = response_json["candidates"][0]
-            content = candidate.get("content")
-            if content and content.get("parts") and content["parts"][0].get("text"):
-                return content["parts"][0]["text"]
-            else:
-                return f"Error: Gemini returned no text content. Full response: {response_json}"
-        else:
-            return f"Error: Gemini returned no candidates. Full response: {response_json}"
+        resp = requests.post(GEMINI_URL, headers=headers, json=data)
+        resp.raise_for_status()
+        result = resp.json()
+        candidates = result.get("candidates")
+        if candidates:
+            content = candidates[0].get("content", {})
+            return content.get("parts", [{}])[0].get("text", "No text returned.")
+        return f"Error: No candidates returned. {result}"
     except Exception as e:
-        return f"Error generating response: {str(e)}"
+        return f"Gemini API error: {str(e)}"
 
 gemini_runnable = RunnableLambda(lambda x: gemini_generate(x))
 
@@ -77,14 +72,11 @@ prompt_template = ChatPromptTemplate.from_messages([
 def simple_rag_chain(query):
     if not query:
         return "No query provided"
-    if retriever is None:
-        return "Error: RAG components (Pinecone/Retriever) failed to load."
     try:
         docs = retriever.get_relevant_documents(query)
-        context = "\n\n".join([doc.page_content for doc in docs])
+        context = "\n\n".join([d.page_content for d in docs])
         messages = prompt_template.format_messages(context=context, query=query)
-        prompt_text = messages[-1].content
-        return gemini_generate(prompt_text)
+        return gemini_generate(messages[-1].content)
     except Exception as e:
         return f"Error processing request: {str(e)}"
 
@@ -93,19 +85,13 @@ def chat():
     msg = request.json.get("query")
     if not msg:
         return jsonify({"error": "No message provided"}), 400
-    try:
-        response = simple_rag_chain(msg)
-        if response.startswith("Error"):
-            return jsonify({"answer": response}), 500
-        return jsonify({"answer": response})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    return jsonify({"answer": simple_rag_chain(msg)})
 
 @app.route("/")
 def index():
     return "Medical AI backend is running!"
 
 if __name__ == "__main__":
-    # ✅ Use Render's dynamic PORT environment variable
+    # ✅ Use Render PORT
     port = int(os.environ.get("PORT", 8080))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port)
