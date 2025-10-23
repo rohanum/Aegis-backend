@@ -31,8 +31,7 @@ try:
     # Initialize PineconeVectorStore directly
     vectorstore = PineconeVectorStore(
         index_name=PINECONE_INDEX_NAME,
-        embedding=embeddings,
-        environment=PINECONE_ENVIRONMENT
+        embedding=embeddings
     )
 
     # Create retriever
