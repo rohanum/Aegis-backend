@@ -4,8 +4,9 @@ from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 
 # --- LangChain imports ---
+from langchain_pinecone import PineconeVectorStore
+from pinecone import Pinecone, ServerlessSpec
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_pinecone import Pinecone
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain.schema.runnable import RunnableLambda
 
@@ -18,22 +19,20 @@ app = Flask(__name__)
 # --- Pinecone Setup ---
 # =====================
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
-PINECONE_ENV = os.environ.get("PINECONE_ENV", "us-west1-gcp")  # adjust if needed
+PINECONE_INDEX_NAME = "medicalbot"
 
-# Initialize embeddings
-embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-
-# Initialize Pinecone retriever
+# Initialize Pinecone client
 try:
-    docsearch = Pinecone(
-        index_name="medicalbot",
-        embedding=embeddings,
-        text_key="text",   # REQUIRED: must match your index's text field
-        api_key=PINECONE_API_KEY,
-        environment=PINECONE_ENV
-    )
-    retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k": 3})
-    print("✅ Pinecone index loaded successfully.")
+    pc = Pinecone(api_key=PINECONE_API_KEY)
+    index = pc.Index(PINECONE_INDEX_NAME)
+
+    # Initialize embeddings
+    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+
+    # Create retriever from the Pinecone index
+    vectorstore = PineconeVectorStore(index=index, embedding=embeddings)
+    retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 3})
+    print("✅ Pinecone index connected successfully.")
 except Exception as e:
     print(f"❌ Error loading Pinecone index: {e}")
     retriever = None
